@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="ISO-8859-1">
+<title>Admin</title>
+<link rel="stylesheet"
+	href="https://unpkg.com/flowbite@1.4.1/dist/flowbite.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+	<div>
+
+		<div class="flex w-full">
+			<div class="w-[256px] min-h-screen">
+				<div th:replace="admin/fragments/nav:: nav"></div>
+			</div>
+			<div class="w-full">
+				<div>
+					<div th:replace="admin/fragments/header:: header"></div>
+				</div>
+				<div class="px-10 py-5">
+					<div layout:fragment="content"></div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div th:replace="admin/fragments/footer:: footer"></div>
+		</div>
+	</div>
+	<script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>
