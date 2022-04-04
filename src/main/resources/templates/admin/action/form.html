@@ -30,7 +30,7 @@
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 					<p th:if="${#fields.hasErrors('name')}"
 						class="mt-2 text-sm text-red-600 dark:text-red-500">
-						<span class="font-medium">Oops!</span> Name is required or invalid
+						<span class="font-medium">Oops!</span> <span th:errors="*{name}"></span>
 					</p>
 				</div>
 				<div class="mb-6">
@@ -40,7 +40,7 @@
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 					<p th:if="${#fields.hasErrors('feature')}"
 						class="mt-2 text-sm text-red-600 dark:text-red-500">
-						<span class="font-medium">Oops!</span> Feature is required or invalid
+						<span class="font-medium">Oops!</span> <span th:errors="*{feature}"></span>
 					</p>
 				</div>
 				<div class="mb-6">
@@ -50,7 +50,7 @@
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 					<p th:if="${#fields.hasErrors('code')}"
 						class="mt-2 text-sm text-red-600 dark:text-red-500">
-						<span class="font-medium">Oops!</span> Code is required or invalid
+						<span class="font-medium">Oops!</span> <span th:errors="*{code}"></span>
 					</p>
 				</div>
 				<button th:unless="${action.edit}" type="submit"

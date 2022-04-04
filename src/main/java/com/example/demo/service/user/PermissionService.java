@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 
-import com.example.demo.domain.user.Action;
 import com.example.demo.domain.user.Permission;
 
 public interface PermissionService {

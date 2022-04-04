@@ -41,6 +41,8 @@ public class User{
 	private String last_name;
 	@Column(columnDefinition = "nvarchar(255) not null")
 	private String email;
+	@Column(columnDefinition = "nvarchar(1000)")
+	private String image;
 	@Column(columnDefinition = "nvarchar(20)")
 	private String phone;
 	private Boolean is_super;
@@ -51,7 +53,7 @@ public class User{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated_at;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_permission",
             joinColumns = @JoinColumn(name = "user_id"),

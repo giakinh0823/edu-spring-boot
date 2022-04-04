@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.StorageProperties;
@@ -17,6 +18,7 @@ import com.example.demo.exception.StorageException;
 import com.example.demo.exception.StorageFileNotFoundException;
 import com.example.demo.service.storage.StorageService;
 
+@Service
 public class FileSytemStorageServiceImpl implements StorageService{
 	/* Xác định đường dẫn gốc dùng để lưu file */
 	private final Path rootLocation;

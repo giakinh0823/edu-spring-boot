@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +51,7 @@ public class PermissionController {
 			ActionDto actionDto= new ActionDto();
 			BeanUtils.copyProperties(item, actionDto);
 			return actionDto;
-		}).toList();
+		}).sorted((o1,o2) -> o1.getFeature().compareToIgnoreCase(o2.getFeature())).toList();
 	}
 	
 
@@ -106,32 +107,37 @@ public class PermissionController {
 				BeanUtils.copyProperties(action, actionDto);
 				permissionDto.getActions().add(actionDto);
 			}
-			for (ActionDto actionDto : permissionDto.getActions()) {
-				System.out.println(actionDto.getName());
-			}
 			return new ModelAndView("admin/permission/form", model);
 		}
 		return new ModelAndView("redirect:admin/permissions", model);
 	}
 
 	@PostMapping("save")
-	public ModelAndView save(@Valid @ModelAttribute("permisson") PermissionDto permissionDto, 
-			@RequestParam("action[]") String[] actionDtos,
+	public ModelAndView save(@Valid @ModelAttribute("permission") PermissionDto permissionDto, 
 			BindingResult result,
+			@RequestParam("action[]") Optional<String[]> actionDtos,
 			final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			return new ModelAndView("admin/permission/form");
 		}
 		Permission permission = new Permission();
-		for (String actionDto : actionDtos) {
-			try {
-				Long id = Long.parseLong(actionDto);
-				Action action = actionService.getById(id);
-				permission.getActions().add(action);
-			} catch (Exception e) {
-				// TODO: handle exception
+		if(!actionDtos.isPresent()) {
+			result.addError(new FieldError("actions","actions", "Please choose at least one action"));
+			return new ModelAndView("admin/permission/form");
+		}else {
+			for (String actionDto : actionDtos.get()) {
+				try {
+					Long id = Long.parseLong(actionDto);
+					Action action = actionService.getById(id);
+					permission.getActions().add(action);
+				} catch (Exception e) {
+					// TODO: handle exception
+					result.addError(new FieldError("actions","actions","Some thing wrong! Please try again"));
+					return new ModelAndView("admin/permission/form");
+				}
 			}
 		}
+		
 		BeanUtils.copyProperties(permissionDto, permission);
 		permissionService.save(permission);
 		redirectAttributes.addFlashAttribute("success", "Permission save success!");

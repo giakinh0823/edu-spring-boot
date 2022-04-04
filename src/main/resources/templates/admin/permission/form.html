@@ -29,24 +29,36 @@
 					<input type="text" id="name" th:field="*{name}"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 					<p th:if="${#fields.hasErrors('name')}"
-						class="mt-2 text-sm text-red-600 dark:text-red-500">
-						<span class="font-medium">Oops!</span> Name is required or invalid
+						class="mt-2 text-sm text-red-600">
+						<span class="font-medium">Oops!</span> <span th:errors="*{name}"></span>
 					</p>
 				</div>
 
 				<div class="mb-6">
 					<div class="grid grid-cols-3 gap-4">
-						<div class="flex items-center" th:each=" action: ${actions}">
-							<input th:id="'action-'+${action.id}"
-								type="checkbox"
-								name="action[]"
-								th:value="${action.id}"
+						<div class="flex items-center">
+							<input id="action-all" type="checkbox"
+								class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2">
+							<label for="action-all"
+								class="ml-2 text-sm font-medium text-gray-900">Select
+								all </label>
+						</div>
+						<div class="flex items-center"
+							th:each=" action: ${actions}">
+							<input onchange="updateSelect()" th:id="'action-'+${action.id}" type="checkbox"
+								name="action[]" th:value="${action.id}"
 								th:checked="${permission.checkAction(action.id)}"
-								class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2"> <label th:for="'action-'+${action.id}"
-								class="ml-2 text-sm font-medium text-gray-900" th:text="${action.name}">
-							</label>
+								class="action-item w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2">
+							<label th:for="'action-'+${action.id}"
+								class="ml-2 text-sm font-medium text-gray-900"
+								th:text="${action.name}"> </label>
 						</div>
 					</div>
+					<p th:if="${#fields.hasErrors('actions')}"
+						class="mt-4 text-sm text-red-600">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{actions}"></span>
+					</p>
 				</div>
 				<button th:unless="${permission.edit}" type="submit"
 					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Add</button>
@@ -54,6 +66,20 @@
 					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Update</button>
 			</form>
 		</div>
+		<script>
+			$("#action-all").on('change', function(){
+				const isChecked = $(this).prop('checked');
+				$(".action-item").each(function(){
+					$(this).prop("checked", isChecked);	
+				});
+			});
+
+			const updateSelect = () => {
+					const isSelectAll = $(".action-item").length == $("input[name='action[]']:checked").length;
+					$("#action-all").prop('checked', isSelectAll);
+				}
+			updateSelect();
+		</script>
 	</div>
 </body>
 </html>
