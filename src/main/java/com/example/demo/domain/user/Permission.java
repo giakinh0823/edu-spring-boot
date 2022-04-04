@@ -31,7 +31,7 @@ public class Permission {
 	@Column(columnDefinition = "nvarchar(100) not null")
 	private String name;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "permission_action",
             joinColumns = @JoinColumn(name = "permission_id"),

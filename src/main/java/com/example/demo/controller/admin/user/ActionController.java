@@ -46,7 +46,7 @@ public class ActionController {
 		int pageSize = size.orElse(20);
 		model.addAttribute("size", pageSize);
 		int currentPage = page.orElse(1);
-		Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("name"));
+		Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("feature"));
 		Page<Action> results = null;
 		System.out.println(name);
 		if (StringUtils.hasText(name)) {

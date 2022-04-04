@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout/dashboard.html}">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container mx-auto mt-20">
+			<form th:action="@{/admin/permissions/save}"
+				th:object="${permission}" class="max-w-lg mx-auto" method="post">
+				<div>
+					<h3 class="text-3xl mb-6" th:unless="${permission.edit}">New
+						Permission</h3>
+					<h3 class="text-3xl mb-6" th:if="${permission.edit}">Update
+						Permission</h3>
+				</div>
+				<input type="hidden" th:field="*{edit}" />
+				<div class="mb-6" th:if="${permission.edit}">
+					<label for="id"
+						class="block mb-2 text-sm font-medium text-gray-900">ID</label> <input
+						type="text" id="id" th:field="*{id}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+				</div>
+				<div class="mb-6">
+					<label for="name"
+						class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+					<input type="text" id="name" th:field="*{name}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('name')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> Name is required or invalid
+					</p>
+				</div>
+
+				<div class="mb-6">
+					<div class="grid grid-cols-3 gap-4">
+						<div class="flex items-center" th:each=" action: ${actions}">
+							<input th:id="'action-'+${action.id}"
+								type="checkbox"
+								name="action[]"
+								th:value="${action.id}"
+								th:checked="${permission.checkAction(action.id)}"
+								class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2"> <label th:for="'action-'+${action.id}"
+								class="ml-2 text-sm font-medium text-gray-900" th:text="${action.name}">
+							</label>
+						</div>
+					</div>
+				</div>
+				<button th:unless="${permission.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Add</button>
+				<button th:if="${permission.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Update</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
