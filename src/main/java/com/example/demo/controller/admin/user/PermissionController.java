@@ -41,19 +41,18 @@ import com.example.demo.service.user.PermissionService;
 public class PermissionController {
 	@Autowired
 	private PermissionService permissionService;
-	
+
 	@Autowired
 	private ActionService actionService;
-	
+
 	@ModelAttribute("actions")
-	public List<ActionDto> getActions(){
+	public List<ActionDto> getActions() {
 		return actionService.findAll().stream().map((item) -> {
-			ActionDto actionDto= new ActionDto();
+			ActionDto actionDto = new ActionDto();
 			BeanUtils.copyProperties(item, actionDto);
 			return actionDto;
-		}).sorted((o1,o2) -> o1.getFeature().compareToIgnoreCase(o2.getFeature())).toList();
+		}).sorted((o1, o2) -> o1.getFeature().compareToIgnoreCase(o2.getFeature())).toList();
 	}
-	
 
 	@GetMapping("")
 	public String get(@RequestParam(name = "name", required = false) String name, ModelMap model,
@@ -113,18 +112,29 @@ public class PermissionController {
 	}
 
 	@PostMapping("save")
-	public ModelAndView save(@Valid @ModelAttribute("permission") PermissionDto permissionDto, 
-			BindingResult result,
-			@RequestParam("action[]") Optional<String[]> actionDtos,
-			final RedirectAttributes redirectAttributes) {
+	public ModelAndView save(@Valid @ModelAttribute("permission") PermissionDto permissionDto, BindingResult result,
+			@RequestParam("action[]") Optional<String[]> actionDtos, final RedirectAttributes redirectAttributes) {
+		if (!actionDtos.isPresent()) {
+			result.addError(new FieldError("actions", "actions", "Please choose at least one action"));
+		}
 		if (result.hasErrors()) {
+			if (actionDtos.isPresent()) {
+				for (String item : actionDtos.get()) {
+					try {
+						Long id = Long.parseLong(item);
+						ActionDto actionDto = new ActionDto();
+						actionDto.setId(id);
+						permissionDto.getActions().add(actionDto);
+					} catch (Exception e) {
+						// TODO: handle exception
+						result.addError(new FieldError("actions", "actions", "Some thing wrong! Please try again"));
+					}
+				}
+			}
 			return new ModelAndView("admin/permission/form");
 		}
 		Permission permission = new Permission();
-		if(!actionDtos.isPresent()) {
-			result.addError(new FieldError("actions","actions", "Please choose at least one action"));
-			return new ModelAndView("admin/permission/form");
-		}else {
+		if (actionDtos.isPresent()) {
 			for (String actionDto : actionDtos.get()) {
 				try {
 					Long id = Long.parseLong(actionDto);
@@ -132,19 +142,18 @@ public class PermissionController {
 					permission.getActions().add(action);
 				} catch (Exception e) {
 					// TODO: handle exception
-					result.addError(new FieldError("actions","actions","Some thing wrong! Please try again"));
+					result.addError(new FieldError("actions", "actions", "Some thing wrong! Please try again"));
 					return new ModelAndView("admin/permission/form");
 				}
 			}
 		}
-		
+
 		BeanUtils.copyProperties(permissionDto, permission);
 		permissionService.save(permission);
 		redirectAttributes.addFlashAttribute("success", "Permission save success!");
 		return new ModelAndView("redirect:/admin/permissions");
 	}
-	
-	
+
 	@GetMapping("delete/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id,
 			@RequestHeader(value = "referer", required = false) String referer,

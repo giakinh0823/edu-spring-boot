@@ -1,5 +1,6 @@
 package com.example.demo.service.user.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -10,16 +11,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.example.demo.domain.user.User;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.service.user.UserService;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public List<User> findByUsernameContaining(String username) {
@@ -32,7 +38,42 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public Optional<User> findByUsernameIgnoreCase(String username) {
+		return userRepository.findByUsernameIgnoreCase(username);
+	}
+
+	@Override
+	public User login(String username, String password) {
+		Optional<User> optional = findByUsernameIgnoreCase(username);
+		if (optional.isPresent() && bCryptPasswordEncoder.matches(password, optional.get().getPassword())) {
+			optional.get().setPassword("");
+			return optional.get();
+		}
+		return null;
+	}
+
+	@Override
 	public <S extends User> S save(S entity) {
+		if (entity.getId() != null) {
+			Optional<User> optional = findById(entity.getId());
+			if (optional.isPresent()) {
+				entity.setCreated_at(optional.get().getCreated_at());
+				entity.setUpdated_at(new Date());
+				if (entity.getPassword()==null || StringUtils.isEmpty(entity.getPassword())) {
+					entity.setPassword(optional.get().getPassword());
+				} else {
+					entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
+				}
+			} else {
+				entity.setCreated_at(new Date());
+				entity.setUpdated_at(new Date());
+				entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
+			}
+		} else {
+			entity.setCreated_at(new Date());
+			entity.setUpdated_at(new Date());
+			entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
+		}
 		return userRepository.save(entity);
 	}
 
@@ -180,6 +221,5 @@ public class UserServiceImpl implements UserService{
 	public <S extends User> List<S> findAll(Example<S> example, Sort sort) {
 		return userRepository.findAll(example, sort);
 	}
-	
-	
+
 }

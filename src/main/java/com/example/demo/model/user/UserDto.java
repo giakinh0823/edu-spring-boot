@@ -1,6 +1,8 @@
 package com.example.demo.model.user;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -18,21 +20,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDto{
 	private Long id;
-	@NotEmpty
-	@Length(min=4)
+	@NotEmpty(message = "Username cant not empty!")
+	@Length(min=4, message = "Username length must be greater than 4")
 	private String username;
-	@NotEmpty
-	@Length(min=6)
 	private String password;
-	@NotEmpty
+	private String confirm_password;
+	@NotEmpty(message = "First name cant not empty!")
 	private String first_name;
-	@NotEmpty
+	@NotEmpty(message = "Last name cant not empty!")
 	private String last_name;
+	@NotEmpty(message = "Email cant not empty!")
 	@Email
 	private String email;
 	private String image;
 	@NotEmpty
-	@Length(min=9)
+	@Length(min=9, message = "Phone length must be greater than 9")
 	private String phone;
 	private Boolean is_super;
 	private Boolean is_active;
@@ -42,5 +44,16 @@ public class UserDto{
 	private Date updated_at;
 	
 	private MultipartFile imageFile;
+	private Set<PermissionDto> permissions = new HashSet<>();
+	
 	private boolean isEdit=false;
+	
+	public boolean checkPermission(Long idPermission) {
+		for (PermissionDto permissionDto : permissions) {
+			if(permissionDto.getId().equals(idPermission)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

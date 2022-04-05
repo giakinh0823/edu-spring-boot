@@ -78,4 +78,8 @@ public interface UserService {
 
 	List<User> findByUsernameContaining(String username);
 
+	User login(String username, String password);
+
+	Optional<User> findByUsernameIgnoreCase(String username);
+
 }

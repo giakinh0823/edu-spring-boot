@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout/dashboard.html}">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container mx-auto mt-20 mb-20">
+			<form th:action="@{/admin/users/save}" th:object="${user}"
+				class="max-w-lg mx-auto" method="post" enctype="multipart/form-data">
+				<div>
+					<h3 class="text-3xl mb-6" th:unless="${user.edit}">New user</h3>
+					<h3 class="text-3xl mb-6" th:if="${user.edit}">Update user</h3>
+				</div>
+				<div th:if="${error!=null}"
+					class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+					role="alert">
+					<span class="font-medium">Error!</span> <span th:text="${error}"></span>
+				</div>
+				<input type="hidden" th:field="*{edit}" />
+				<div class="mb-6" th:if="${user.edit}">
+					<label for="id"
+						class="block mb-2 text-sm font-medium text-gray-900">ID</label> <input
+						type="text" id="id" th:field="*{id}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+				</div>
+				<div class="mb-6">
+					<label for="username"
+						class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+					<input type="text" id="usename" th:field="*{username}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('username')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{username}"></span>
+					</p>
+				</div>
+				<div class="mb-6" th:unless="${user.edit}">
+					<label for="password"
+						class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+					<input type="password" id="password" th:field="*{password}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('password')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{password}"></span>
+					</p>
+				</div>
+				<div class="mb-6" th:unless="${user.edit}">
+					<label for="confirm_password"
+						class="block mb-2 text-sm font-medium text-gray-900">Confirm password</label>
+					<input type="password" id="confirm_password" th:field="*{confirm_password}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('confirm_password')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{confirm_password}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="first_name"
+						class="block mb-2 text-sm font-medium text-gray-900">First
+						Name</label> <input type="text" id="first_name" th:field="*{first_name}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('first_name')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{first_name}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="last_name"
+						class="block mb-2 text-sm font-medium text-gray-900">Last
+						Name</label> <input type="text" id="last_name" th:field="*{last_name}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('last_name')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{last_name}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="gender"
+						class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+					<div class="flex items-center">
+						<div class="flex items-center">
+							<input id="male" type="radio" value="true" th:field="*{gender}"
+								class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300">
+							<label for="male"
+								class="block ml-3 text-sm font-medium text-gray-900">Male</label>
+						</div>
+						<div class="flex items-center ml-4">
+							<input id="female" type="radio" value="false"
+								th:field="*{gender}"
+								class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300">
+							<label for="female"
+								class="block ml-3 text-sm font-medium text-gray-900">Female</label>
+						</div>
+					</div>
+					<p th:if="${#fields.hasErrors('gender')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{gender}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="email"
+						class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+					<input type="email" id="email" th:field="*{email}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('email')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{email}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="phone"
+						class="block mb-2 text-sm font-medium text-gray-900">Phone</label>
+					<input type="text" id="phone" th:field="*{phone}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('phone')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{phone}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<input id="image" type="hidden" th:field="*{image}"/>
+					<div id="preview" th:class="'flex justify-center mb-6 '+${user.edit && user.image!=null ?'':'hidden'}">
+						<img class="w-[200px] h-[200px] rounded-full" id="image-preview"  th:src="@{'/admin/users/images/'+${user.edit && user.image!=null ?user.image:'default.jpg'}}"/>
+					</div>
+					<label for="imageFile"
+						class="block mb-2 text-sm font-medium text-gray-900">Avatar</label>
+					<input id="imageFile" type="file" name="imageFile"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+				</div>
+				<div class="flex items-center">
+					<div class="mb-6">
+						<div class="flex items-center">
+							<input type="checkbox" id="is_active" th:field="*{is_active}" 
+								class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2" >
+							<span class="ml-3 text-sm font-medium text-gray-900">is_active</span>
+						</div>
+						<p th:if="${#fields.hasErrors('is_active')}"
+							class="mt-2 text-sm text-red-600 dark:text-red-500">
+							<span class="font-medium">Oops!</span> <span
+								th:errors="*{is_active}"></span>
+						</p>
+					</div>
+					<div class="mb-6 ml-4">
+						<div class="flex items-center">
+							<input type="checkbox" id="is_super" th:field="*{is_super}"
+								class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2">
+							<span class="ml-3 text-sm font-medium text-gray-900">is_super</span>
+						</div>
+						<p th:if="${#fields.hasErrors('is_super')}"
+							class="mt-2 text-sm text-red-600 dark:text-red-500">
+							<span class="font-medium">Oops!</span> <span
+								th:errors="*{is_super}"></span>
+						</p>
+					</div>
+				</div>
+				<div class="mb-6">
+				<label class="block mb-2 text-sm font-medium text-gray-900">Permission</label>
+					<div class="grid grid-cols-3 gap-4">
+						<div class="flex items-center">
+							<input id="permission-all" type="checkbox"
+								class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2">
+							<label for="action-all"
+								class="ml-2 text-sm font-medium text-gray-900">Select
+								all </label>
+						</div>
+						<div class="flex items-center"
+							th:each=" permission: ${permissions}">
+							<input onchange="updateSelect()" th:id="'permission-'+${permission.id}" type="checkbox"
+								name="permission[]" th:value="${permission.id}"
+								th:checked="${user.checkPermission(permission.id)}"
+								class="permission-item w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2">
+							<label th:for="'permission-'+${permission.id}"
+								class="ml-2 text-sm font-medium text-gray-900"
+								th:text="${permission.name}"> </label>
+						</div>
+					</div>
+					<p th:if="${#fields.hasErrors('permissions')}"
+						class="mt-4 text-sm text-red-600">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{permissions}"></span>
+					</p>
+				</div>
+				<button th:unless="${user.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Add</button>
+				<button th:if="${user.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Update</button>
+			</form>
+		</div>
+		<script>
+			$("#permission-all").on('change', function(){
+				const isChecked = $(this).prop('checked');
+				$(".permission-item").each(function(){
+					$(this).prop("checked", isChecked);	
+				});
+			});
+
+			const updateSelect = () => {
+					const isSelectAll = $(".permission-item").length == $("input[name='permission[]']:checked").length;
+					$("#permission-all").prop('checked', isSelectAll);
+				}
+			updateSelect();
+
+			var currenAvatar = $("#image").attr("src")
+            var file;
+            $("#imageFile").on('change', function(e){
+                if (file) {
+                    URL.revokeObjectURL(file.preview);
+                }
+                file = e.target.files[0];
+                file.preview = URL.createObjectURL(file);
+                console.log(file);
+                $("#image-preview").attr("src", file.preview);
+                $("#preview").removeClass("hidden");
+            })
+
+			window.onbeforeunload = function (e) {
+                URL.revokeObjectURL(file.preview);
+            };
+		</script>
+	</div>
+</body>
+</html>
