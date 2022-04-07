@@ -18,7 +18,7 @@ public class SiteAuthenticationInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		if(session.getAttribute("account")!=null) {
+		if(session.getAttribute("user")!=null) {
 			return true;
 		}
 		session.setAttribute("redirect-uri", request.getRequestURI());

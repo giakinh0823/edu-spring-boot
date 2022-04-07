@@ -16,6 +16,17 @@
 					<h3 class="text-3xl mb-6" th:if="${action.edit}">Update
 						Action</h3>
 				</div>
+				<div th:if="${success!=null}"
+					class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+					role="alert">
+					<span class="font-medium">Success!</span> <span
+						th:text="${success}"></span>
+				</div>
+				<div th:if="${error!=null}"
+					class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+					role="alert">
+					<span class="font-medium">Error!</span> <span th:text="${error}"></span>
+				</div>
 				<input type="hidden" th:field="*{edit}" />
 				<div class="mb-6" th:if="${action.edit}">
 					<label for="id"

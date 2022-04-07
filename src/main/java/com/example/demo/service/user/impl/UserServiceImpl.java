@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 
 	@Override
 	public List<User> findByUsernameContaining(String username) {

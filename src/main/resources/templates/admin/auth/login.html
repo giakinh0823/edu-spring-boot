@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="ISO-8859-1">
+<title>Admin</title>
+<link rel="stylesheet"
+	href="https://unpkg.com/flowbite@1.4.1/dist/flowbite.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+	<div
+		class="container mx-auto flex justify-center items-center min-h-screen">
+		<form th:action="@{/admin/auth/login}" class="mx-auto min-w-[500px]"
+			method="post" th:object="${admin}">
+			<div th:if="${error!=null}"
+				class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+				role="alert">
+				<span class="font-medium">Error!</span> <span th:text="${error}"></span>
+			</div>
+			<div class="mb-6">
+				<label for="email"
+					class="block mb-2 text-sm font-medium text-gray-900">Your
+					username</label> <input id="username" th:field="*{username}"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+					placeholder="giakinh@gmail.com" required>
+				<p th:if="${#fields.hasErrors('username')}"
+					class="mt-2 text-sm text-red-600 dark:text-red-500">
+					<span class="font-medium">Oops!</span> Username is required or
+					invalid
+				</p>
+			</div>
+			<div class="mb-6">
+				<label for="password"
+					class="block mb-2 text-sm font-medium text-gray-900">Your
+					password</label> <input type="password" id="password"
+					th:field="*{password}"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+					required>
+				<p th:if="${#fields.hasErrors('password')}"
+					class="mt-2 text-sm text-red-600 dark:text-red-500">
+					<span class="font-medium">Oops!</span> Password is required or
+					invalid
+				</p>
+			</div>
+			<div class="flex items-start mb-6">
+				<div class="flex items-center h-5">
+					<input id="remember" aria-describedby="remember" type="checkbox"
+						th:field="*{rememberMe}"
+						value="false"
+						class="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300">
+				</div>
+				<div class="ml-3 text-sm">
+					<label for="remember" class="font-medium text-gray-900">Remember
+						me</label>
+				</div>
+			</div>
+			<button type="submit"
+				class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+		</form>
+	</div>
+	<script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+</body>
+</html>

@@ -24,6 +24,7 @@
 										clip-rule="evenodd"></path></svg>
 							</div>
 							<input type="text" id="search" name="search"
+								th:value="${search}"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
 								placeholder="Search for items">
 							<Button type="submit"
@@ -96,10 +97,10 @@
 							<td class="px-6 py-4 text-center text-gray-600 font-medium"
 								th:text="${user.gender?'male':'female'}"></td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium">
-								<input type="checkbox" th:checked="${user.is_super}" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
+								<input type="checkbox" th:checked="${user.is_super}" disabled class="disabled w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
 							</td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium">
-								<input type="checkbox" th:checked="${user.is_active}" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
+								<input type="checkbox" th:checked="${user.is_active}" disabled class="disabled w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
 							</td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium">
 								<p th:each="permission: ${user.permissions}" th:text="${permission.name}"></p>
@@ -111,9 +112,10 @@
 							<td class="px-6 py-4 text-center flex justify-center">
 								<div class="relative">
 									<img
-										class="w-[50px] h-[50px] rounded-full"
-										th:src="@{'/admin/users/images/'+${user.image}}" /> <span
-										class="bottom-0 left-8 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
+										class="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] rounded-full"
+										th:src="@{'/admin/users/images/'+${user.image}}" /> 
+									<span th:if="${user.is_active}" class="bottom-0 left-8 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
+									<span th:unless="${user.is_active}" class="bottom-0 left-8 absolute w-3.5 h-3.5 bg-red-400 border-2 border-white rounded-full" />
 								</div>
 							</td>
 							<td class="px-6 py-4 text-center font-medium"><a
@@ -130,7 +132,7 @@
 				<nav class="mt-10" th:if="${results.totalPages > 0}">
 					<ul class="inline-flex -space-x-px">
 						<li><a
-							th:href="@{/admin/users(name=${name}, page=${results.number > 0 ? results.number:1}, size=${size})}"
+							th:href="@{/admin/users(search=${search}, page=${results.number > 0 ? results.number:1}, size=${size})}"
 							class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
 						</li>
 						<li th:each=" page :${pages}" th:if="${page>=0}"><a

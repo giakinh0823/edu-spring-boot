@@ -6,6 +6,6 @@ import lombok.Data;
 
 @ConfigurationProperties("storage")
 @Data
-public class StorageProperties {
+public class StorageProperties{
 	private String location;
 }

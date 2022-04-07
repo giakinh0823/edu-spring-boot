@@ -14,6 +14,12 @@
 					<h3 class="text-3xl mb-6" th:unless="${user.edit}">New user</h3>
 					<h3 class="text-3xl mb-6" th:if="${user.edit}">Update user</h3>
 				</div>
+				<div th:if="${success!=null}"
+					class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+					role="alert">
+					<span class="font-medium">Success!</span> <span
+						th:text="${success}"></span>
+				</div>
 				<div th:if="${error!=null}"
 					class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
 					role="alert">

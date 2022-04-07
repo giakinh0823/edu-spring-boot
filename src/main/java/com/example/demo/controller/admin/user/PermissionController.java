@@ -113,7 +113,9 @@ public class PermissionController {
 
 	@PostMapping("save")
 	public ModelAndView save(@Valid @ModelAttribute("permission") PermissionDto permissionDto, BindingResult result,
-			@RequestParam("action[]") Optional<String[]> actionDtos, final RedirectAttributes redirectAttributes) {
+			@RequestParam("action[]") Optional<String[]> actionDtos, 
+			@RequestHeader(value = "referer", required = false) String referer,
+			final RedirectAttributes redirectAttributes) {
 		if (!actionDtos.isPresent()) {
 			result.addError(new FieldError("actions", "actions", "Please choose at least one action"));
 		}
@@ -151,7 +153,7 @@ public class PermissionController {
 		BeanUtils.copyProperties(permissionDto, permission);
 		permissionService.save(permission);
 		redirectAttributes.addFlashAttribute("success", "Permission save success!");
-		return new ModelAndView("redirect:/admin/permissions");
+		return new ModelAndView("redirect:"+referer);
 	}
 
 	@GetMapping("delete/{id}")

@@ -38,7 +38,6 @@ public class ActionController {
 	@Autowired
 	private ActionService actionService;
 
-
 	@GetMapping("")
 	public String get(@RequestParam(name = "name", required = false) String name, ModelMap model,
 			@RequestParam(name= "page") Optional<Integer> page, 
@@ -96,6 +95,7 @@ public class ActionController {
 	@PostMapping("save")
 	public ModelAndView save(@Valid @ModelAttribute("action") ActionDto actionDto,
 			BindingResult result,
+			@RequestHeader(value = "referer", required = false) String referer,
 			final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			return new ModelAndView("admin/action/form");
@@ -104,7 +104,7 @@ public class ActionController {
 		BeanUtils.copyProperties(actionDto, action);
 		actionService.save(action);
 		redirectAttributes.addFlashAttribute("success", "Action save success!");
-		return new ModelAndView("redirect:/admin/actions");
+		return new ModelAndView("redirect:"+referer);
 	}
 
 	@GetMapping("delete/{id}")
