@@ -28,16 +28,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.domain.post.Category;
 import com.example.demo.domain.post.Group;
+import com.example.demo.model.post.CategoryDto;
 import com.example.demo.model.post.GroupDto;
+import com.example.demo.service.post.CategoryService;
 import com.example.demo.service.post.GroupService;
 
 @Controller
-@RequestMapping("admin/groups")
-public class GroupController {
+@RequestMapping("admin/categories")
+public class CategoryController {
+	
+	@Autowired
+	private CategoryService categoryService;
+	
 	@Autowired
 	private GroupService groupService;
 	
+	@ModelAttribute("groups")
+	public List<GroupDto> getGroups(){
+		return groupService.findAll().stream().map((item) -> {
+			GroupDto groupDto= new GroupDto();
+			BeanUtils.copyProperties(item, groupDto);
+			return groupDto;
+		}).toList();
+	}
 	
 	@GetMapping("")
 	public String get(@RequestParam(name = "name", required = false) String name, ModelMap model,
@@ -47,12 +62,12 @@ public class GroupController {
 		model.addAttribute("size", pageSize);
 		int currentPage = page.orElse(1);
 		Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("id"));
-		Page<Group> results = null;
+		Page<Category> results = null;
 		if (StringUtils.hasText(name)) {
-			results = groupService.findByNameContaining(name, pageable);
+			results = categoryService.findByNameContaining(name, pageable);
 			model.addAttribute("name", name);
 		} else {
-			results = groupService.findAll(pageable);
+			results = categoryService.findAll(pageable);
 		}
 		int totalPages = results.getTotalPages();
 		if (totalPages > 0) {
@@ -68,54 +83,58 @@ public class GroupController {
 			model.addAttribute("pages", pages);
 		}
 		model.addAttribute("results", results);
-		return "admin/group/list";
+		return "admin/category/list";
 	}
-	
 	
 	@GetMapping("add")
 	public String add(Model model) {
-		model.addAttribute("group", new GroupDto());
-		return "admin/group/form";
+		model.addAttribute("category", new CategoryDto());
+		return "admin/category/form";
 	}
 
 	@GetMapping("edit/{id}")
 	public ModelAndView edit(@PathVariable("id") Long id, ModelMap model) {
-		Optional<Group> optional = groupService.findById(id);
-		GroupDto groupDto = new GroupDto();
+		Optional<Category> optional = categoryService.findById(id);
+		CategoryDto categoryDto = new CategoryDto();
 		if (!optional.isEmpty()) {
-			Group group = optional.get();
-			BeanUtils.copyProperties(group, groupDto);
-			groupDto.setEdit(true);
-			model.addAttribute("group", groupDto);
-			return new ModelAndView("admin/group/form", model);
+			Category category = optional.get();
+			BeanUtils.copyProperties(category, categoryDto);
+			categoryDto.setEdit(true);
+			categoryDto.setGroupId(category.getGroup().getId());
+			model.addAttribute("category", categoryDto);
+			return new ModelAndView("admin/category/form", model);
 		}
-		return new ModelAndView("redirect:admin/groups", model);
+		return new ModelAndView("redirect:admin/categories", model);
 	}
 
 	@PostMapping("save")
-	public ModelAndView save(@Valid @ModelAttribute("group") GroupDto groupDto,
+	public ModelAndView save(@Valid @ModelAttribute("category") CategoryDto categoryDto,
 			BindingResult result,
 			@RequestHeader(value = "referer", required = false) String referer,
 			final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
-			return new ModelAndView("admin/group/form");
+			return new ModelAndView("admin/category/form");
 		}
+		Category category = new Category();
+		BeanUtils.copyProperties(categoryDto, category);
 		Group group = new Group();
-		BeanUtils.copyProperties(groupDto, group);
-		groupService.save(group);
-		redirectAttributes.addFlashAttribute("success", "Group save success!");
-		if(groupDto.isEdit()) {
+		group.setId(categoryDto.getGroupId());
+		category.setGroup(group);
+		categoryService.save(category);
+		redirectAttributes.addFlashAttribute("success", "Category save success!");
+		if(categoryDto.isEdit()) {
 			return new ModelAndView("redirect:"+referer);
 		}
-		return new ModelAndView("redirect:/admin/groups");
+		return new ModelAndView("redirect:/admin/categories");
 	}
 	
 	@GetMapping("delete/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id,
 			@RequestHeader(value = "referer", required = false) String referer,
 			final RedirectAttributes redirectAttributes) {
-		groupService.deleteById(id);
-		redirectAttributes.addFlashAttribute("success", "Group is deleted!");
+		categoryService.deleteById(id);
+		redirectAttributes.addFlashAttribute("success", "Category is deleted!");
 		return new ModelAndView("redirect:" + referer);
 	}
+	
 }

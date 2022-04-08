@@ -80,6 +80,7 @@
 							<th scope="col" class="px-6 py-3 text-center">phone</th>
 							<th scope="col" class="px-6 py-3 text-center">gender</th>
 							<th scope="col" class="px-6 py-3 text-center">is_super</th>
+							<th scope="col" class="px-6 py-3 text-center">is_staff</th>
 							<th scope="col" class="px-6 py-3 text-center">is_active</th>
 							<th scope="col" class="px-6 py-3 text-center">permission</th>
 							<th scope="col" class="px-6 py-3 text-center">created_at</th>
@@ -106,6 +107,10 @@
 								th:text="${user.gender?'male':'female'}"></td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium">
 								<input type="checkbox" th:checked="${user.is_super}" disabled
+								class="disabled w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500" />
+							</td>
+							<td class="px-6 py-4 text-center text-gray-600 font-medium">
+								<input type="checkbox" th:checked="${user.is_staff}" disabled
 								class="disabled w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500" />
 							</td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium">

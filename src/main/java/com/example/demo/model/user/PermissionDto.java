@@ -1,5 +1,6 @@
 package com.example.demo.model.user;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PermissionDto {
+public class PermissionDto implements Serializable{
 	private Long id;
 	@NotEmpty
 	private String name;

@@ -1,5 +1,6 @@
 package com.example.demo.model.post;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto {
+public class PostDto implements Serializable{
 	private Long id;
 	private String slug;
 	@NotEmpty

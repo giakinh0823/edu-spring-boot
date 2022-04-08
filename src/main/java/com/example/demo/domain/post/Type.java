@@ -1,5 +1,6 @@
 package com.example.demo.domain.post;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,13 +22,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="[type]")
-public class Type {
+public class Type implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(columnDefinition = "nvarchar(255) NOT NULL")
 	private String name;
+	
+	private Boolean is_fee;
 	
 	@OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
 	private Set<Document> documents = new HashSet<>();

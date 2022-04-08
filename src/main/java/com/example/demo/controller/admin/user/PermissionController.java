@@ -62,7 +62,6 @@ public class PermissionController {
 		int currentPage = page.orElse(1);
 		Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("name"));
 		Page<Permission> results = null;
-		System.out.println(name);
 		if (StringUtils.hasText(name)) {
 			results = permissionService.findByNameContaining(name, pageable);
 			model.addAttribute("name", name);

@@ -1,5 +1,6 @@
 package com.example.demo.model.user;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto{
+public class UserDto implements Serializable{
 	private Long id;
 	@NotEmpty(message = "Username cant not empty!")
 	@Length(min=4, message = "Username length must be greater than 4")

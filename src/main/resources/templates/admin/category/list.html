@@ -11,7 +11,7 @@
 			<div class="flex justify-between items-center">
 				<div class="p-4">
 					<label for="table-search" class="sr-only">Search</label>
-					<form th:action="@{/admin/groups}" method="get">
+					<form th:action="@{/admin/categories}" method="get">
 						<div class="relative flex items-center">
 							<input name="size" type="hidden" th:value="${size}" />
 							<div
@@ -44,7 +44,7 @@
 							<option value="150" th:selected="${size==150}">150</option>
 						</select>
 					</form>
-					<a href="/admin/groups/add"
+					<a href="/admin/categories/add"
 						class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 ml-5 focus:outline-none">Add</a>
 				</div>
 			</div>
@@ -65,21 +65,34 @@
 						<tr>
 							<th scope="col" class="px-6 py-3 text-center">Id</th>
 							<th scope="col" class="px-6 py-3 text-center">Name</th>
+							<th scope="col" class="px-6 py-3 text-center">Group</th>
+							<th scope="col" class="px-6 py-3 text-center">Folder</th>
 							<th scope="col" class="px-6 py-3 text-center">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each=" group: ${results.content}"
+						<tr th:each=" category: ${results.content}"
 							class="bg-white border-b">
 							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${group.id}"></td>
+								th:text="${category.id}"></td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${group.name}"></td>
+								th:text="${category.name}"></td>
+							<td class="px-6 py-4 text-center text-gray-600 font-medium"
+								th:text="${category.group.name}"></td>
+							<td class="px-6 py-4 flex items-center justify-center font-medium"><a
+								class="text-blue-600"
+								th:href="@{'/admin/categories/detail/'+${category.id}+'/chapters'}">
+									<svg class="w-6 h-6" fill="none" stroke="currentColor"
+										viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path stroke-linecap="round" stroke-linejoin="round"
+											stroke-width="2"
+											d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+							</a></td>
 							<td class="px-6 py-4 text-center font-medium"><a
 								class="text-blue-600"
-								th:href="@{'/admin/groups/edit/'+${group.id}}">Edit</a> <span>/</span>
+								th:href="@{'/admin/categories/edit/'+${category.id}}">Edit</a> <span>/</span>
 								<button type="button" class="text-red-500"
-									th:data-id="${group.id}" onclick="openModal(this)">Delete</button>
+									th:data-id="${category.id}" onclick="openModal(this)">Delete</button>
 							</td>
 						</tr>
 					</tbody>
@@ -89,20 +102,20 @@
 				<nav class="mt-10" th:if="${results.totalPages > 0}">
 					<ul class="inline-flex -space-x-px">
 						<li><a
-							th:href="@{/admin/groups(name=${name}, page=${results.number > 0 ? results.number:1}, size=${size})}"
+							th:href="@{/admin/categories(name=${name}, page=${results.number > 0 ? results.number:1}, size=${size})}"
 							class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
 						</li>
 						<li th:each=" page :${pages}" th:if="${page>=0}"><a
 							th:if="${page!=results.number+1}" th:text="${page}"
-							th:href="@{/admin/groups(name=${name}, page=${page})}"
+							th:href="@{/admin/categories(name=${name}, page=${page})}"
 							class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "></a>
 							<a th:if="${page==results.number+1}" th:text="${page}"
-							th:href="@{/admin/groups(name=${name}, page=${page}, size=${size})}"
+							th:href="@{/admin/categories(name=${name}, page=${page}, size=${size})}"
 							aria-current="page"
 							class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700"></a>
 						</li>
 						<li><a
-							th:href="@{/admin/groups(name=${name}, page=${results.number+2 > results.totalPages ? results.totalPages : results.number+2}, size=${size})}"
+							th:href="@{/admin/categories(name=${name}, page=${results.number+2 > results.totalPages ? results.totalPages : results.number+2}, size=${size})}"
 							class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
 						</li>
 					</ul>
@@ -153,7 +166,7 @@
 		</div>
 		<script type="text/javascript">
 			function openModal(e){
-				$("#accept-delete-modal").attr("href", "/admin/groups/delete/"+$(e).attr("data-id"));
+				$("#accept-delete-modal").attr("href", "/admin/categories/delete/"+$(e).attr("data-id"));
 				$("#button-delete-modal").click();
 			}
 		</script>

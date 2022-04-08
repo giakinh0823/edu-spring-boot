@@ -1,5 +1,6 @@
 package com.example.demo.domain.post;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="[group]")
-public class Group {
+public class Group implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,5 +39,5 @@ public class Group {
 	private String name;
 	
 	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
-	private Set<Category> categorys = new HashSet<>();
+	private Set<Category> categories = new HashSet<>();
 }

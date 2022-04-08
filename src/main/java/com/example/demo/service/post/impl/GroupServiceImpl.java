@@ -18,11 +18,10 @@ import com.example.demo.service.post.GroupService;
 import com.example.demo.utils.SlugUtils;
 
 @Service
-public class GroupServiceImpl implements GroupService{
-	
+public class GroupServiceImpl implements GroupService {
+
 	@Autowired
 	private GroupRepository groupRepository;
-	
 
 	@Override
 	public List<Group> findBySlugContaining(String slug) {
@@ -41,22 +40,27 @@ public class GroupServiceImpl implements GroupService{
 
 	@Override
 	public <S extends Group> S save(S entity) {
-		if(entity.getSlug()==null || entity.getSlug().isEmpty() 
-				|| !entity.getSlug().replaceFirst("(?s)"+"-[0-9]"+"(?!.*?"+"-[0-9]"+")", "").equalsIgnoreCase(SlugUtils.toSlug(entity.getName()))) {
-			try {
-				entity.setSlug(SlugUtils.toSlug(entity.getName()));
+		try {
+			String slug = SlugUtils.toSlug(entity.getName());
+			if (entity.getId() != null && slug.replaceFirst("(?s)" + "-[0-9]" + "(?!.*?" + "-[0-9]" + ")", "")
+					.equalsIgnoreCase(SlugUtils.toSlug(entity.getName()))) {
 				return groupRepository.save(entity);
-			} catch (Exception e) {
-				String slug = SlugUtils.toSlug(entity.getName());
-				List<Group> groups = findBySlugContaining(slug);
-				int count = groups.size();
-				System.out.print(count);
-				entity.setSlug(SlugUtils.toSlug(entity.getName())+"-"+count);
-				return groupRepository.save(entity);
-				// TODO: handle exception
 			}
+			entity.setSlug(SlugUtils.toSlug(entity.getName()));
+			return groupRepository.save(entity);
+		} catch (Exception e) {
+			String slug = SlugUtils.toSlug(entity.getName());
+			List<Group> groups = findBySlugContaining(slug);
+			if ((groups.size() == 1 && entity.getId() != null)
+					|| (entity.getId() != null && slug.replaceFirst("(?s)" + "-[0-9]" + "(?!.*?" + "-[0-9]" + ")", "")
+							.equalsIgnoreCase(SlugUtils.toSlug(entity.getName())))) {
+				return groupRepository.save(entity);
+			}
+			Long count = groups.get(groups.size() - 1).getId();
+			entity.setSlug(SlugUtils.toSlug(entity.getName()) + "-" + count);
+			return groupRepository.save(entity);
+			// TODO: handle exception
 		}
-		return groupRepository.save(entity);
 	}
 
 	@Override
@@ -203,6 +207,5 @@ public class GroupServiceImpl implements GroupService{
 	public <S extends Group> List<S> findAll(Example<S> example, Sort sort) {
 		return groupRepository.findAll(example, sort);
 	}
-	
-	
+
 }

@@ -47,7 +47,6 @@ public class ActionController {
 		int currentPage = page.orElse(1);
 		Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("feature"));
 		Page<Action> results = null;
-		System.out.println(name);
 		if (StringUtils.hasText(name)) {
 			results = actionService.findByNameContaining(name, pageable);
 			model.addAttribute("name", name);

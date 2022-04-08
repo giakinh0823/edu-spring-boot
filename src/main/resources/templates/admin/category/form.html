@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout/dashboard.html}">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container mx-auto mt-20">
+			<form th:action="@{/admin/categories/save}" th:object="${category}"
+				class="max-w-lg mx-auto" method="post">
+				<div>
+					<h3 class="text-3xl mb-6" th:unless="${category.edit}">New
+						category</h3>
+					<h3 class="text-3xl mb-6" th:if="${category.edit}">Update
+						category</h3>
+				</div>
+				<div th:if="${success!=null}"
+					class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+					role="alert">
+					<span class="font-medium">Success!</span> <span
+						th:text="${success}"></span>
+				</div>
+				<div th:if="${error!=null}"
+					class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+					role="alert">
+					<span class="font-medium">Error!</span> <span th:text="${error}"></span>
+				</div>
+				<input type="hidden" th:field="*{edit}" />
+				<div class="mb-6" th:if="${category.edit}">
+					<label for="id"
+						class="block mb-2 text-sm font-medium text-gray-900">ID</label> <input
+						type="text" id="id" th:field="*{id}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+				</div>
+				<div class="mb-6">
+					<label for="name"
+						class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+					<input type="text" id="name" th:field="*{name}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('name')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{name}"></span>
+					</p>
+				</div>
+				<div class="mb-6" th:if="${category.edit}">
+					<label for="slug"
+						class="block mb-2 text-sm font-medium text-gray-900">Slug</label>
+					<input type="text" id="slug" th:field="*{slug}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('slug')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{slug}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="group"
+						class="block mb-2 text-sm font-medium text-gray-900 ">Group</label> 
+						<select id="group"
+						th:field="*{groupId}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+						<option th:each=" group: ${groups}" th:value="${group.id}"  th:selected="${group.id == category.groupId}" th:text="${group.name}"></option>
+					</select>
+					<p th:if="${#fields.hasErrors('groupId')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> Group is required or
+						invalid
+					</p>
+				</div>
+				<button th:unless="${category.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Add</button>
+				<button th:if="${category.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Update</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.example.demo.model.user;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActionDto {
+public class ActionDto implements Serializable{
 	private Long id;
 	@NotEmpty
 	private String name;

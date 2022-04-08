@@ -1,5 +1,7 @@
 package com.example.demo.model.post;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessonDto {
+public class LessonDto implements Serializable{
 	private Long id;
 	private String slug;
 	@NotEmpty

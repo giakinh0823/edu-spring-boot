@@ -28,35 +28,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.domain.post.Group;
-import com.example.demo.model.post.GroupDto;
-import com.example.demo.service.post.GroupService;
+import com.example.demo.domain.post.Type;
+import com.example.demo.model.post.TypeDto;
+import com.example.demo.service.post.TypeService;
 
 @Controller
-@RequestMapping("admin/groups")
-public class GroupController {
+@RequestMapping("admin/types")
+public class TypeController {
 	@Autowired
-	private GroupService groupService;
-	
-	
+	private TypeService typeService;
+
 	@GetMapping("")
 	public String get(@RequestParam(name = "name", required = false) String name, ModelMap model,
-			@RequestParam(name= "page") Optional<Integer> page, 
-			@RequestParam(name= "size") Optional<Integer> size) {
+			@RequestParam(name = "page") Optional<Integer> page, @RequestParam(name = "size") Optional<Integer> size) {
 		int pageSize = size.orElse(20);
 		model.addAttribute("size", pageSize);
 		int currentPage = page.orElse(1);
-		Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("id"));
-		Page<Group> results = null;
+		Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("name"));
+		Page<Type> results = null;
 		if (StringUtils.hasText(name)) {
-			results = groupService.findByNameContaining(name, pageable);
+			results = typeService.findByNameContaining(name, pageable);
 			model.addAttribute("name", name);
 		} else {
-			results = groupService.findAll(pageable);
+			results = typeService.findAll(pageable);
 		}
 		int totalPages = results.getTotalPages();
 		if (totalPages > 0) {
-			int start = Math.max(1, currentPage-2);
+			int start = Math.max(1, currentPage - 2);
 			int end = Math.min(currentPage + 2, totalPages);
 			if (totalPages > 5) {
 				if (end == totalPages)
@@ -68,54 +66,52 @@ public class GroupController {
 			model.addAttribute("pages", pages);
 		}
 		model.addAttribute("results", results);
-		return "admin/group/list";
+		return "admin/type/list";
 	}
-	
-	
+
 	@GetMapping("add")
 	public String add(Model model) {
-		model.addAttribute("group", new GroupDto());
-		return "admin/group/form";
+		model.addAttribute("type", new TypeDto());
+		return "admin/type/form";
 	}
 
 	@GetMapping("edit/{id}")
 	public ModelAndView edit(@PathVariable("id") Long id, ModelMap model) {
-		Optional<Group> optional = groupService.findById(id);
-		GroupDto groupDto = new GroupDto();
+		Optional<Type> optional = typeService.findById(id);
+		TypeDto typeDto = new TypeDto();
 		if (!optional.isEmpty()) {
-			Group group = optional.get();
-			BeanUtils.copyProperties(group, groupDto);
-			groupDto.setEdit(true);
-			model.addAttribute("group", groupDto);
-			return new ModelAndView("admin/group/form", model);
+			Type type = optional.get();
+			BeanUtils.copyProperties(type, typeDto);
+			typeDto.setEdit(true);
+			model.addAttribute("type", typeDto);
+			return new ModelAndView("admin/type/form", model);
 		}
-		return new ModelAndView("redirect:admin/groups", model);
+		return new ModelAndView("redirect:admin/types", model);
 	}
 
 	@PostMapping("save")
-	public ModelAndView save(@Valid @ModelAttribute("group") GroupDto groupDto,
-			BindingResult result,
+	public ModelAndView save(@Valid @ModelAttribute("type") TypeDto typeDto, BindingResult result,
 			@RequestHeader(value = "referer", required = false) String referer,
 			final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
-			return new ModelAndView("admin/group/form");
+			return new ModelAndView("admin/type/form");
 		}
-		Group group = new Group();
-		BeanUtils.copyProperties(groupDto, group);
-		groupService.save(group);
-		redirectAttributes.addFlashAttribute("success", "Group save success!");
-		if(groupDto.isEdit()) {
-			return new ModelAndView("redirect:"+referer);
+		Type type = new Type();
+		BeanUtils.copyProperties(typeDto, type);
+		typeService.save(type);
+		redirectAttributes.addFlashAttribute("success", "Type save success!");
+		if (typeDto.isEdit()) {
+			return new ModelAndView("redirect:" + referer);
 		}
-		return new ModelAndView("redirect:/admin/groups");
+		return new ModelAndView("redirect:/admin/types");
 	}
-	
+
 	@GetMapping("delete/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id,
 			@RequestHeader(value = "referer", required = false) String referer,
 			final RedirectAttributes redirectAttributes) {
-		groupService.deleteById(id);
-		redirectAttributes.addFlashAttribute("success", "Group is deleted!");
+		typeService.deleteById(id);
+		redirectAttributes.addFlashAttribute("success", "Type is deleted!");
 		return new ModelAndView("redirect:" + referer);
 	}
 }
