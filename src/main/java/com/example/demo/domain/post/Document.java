@@ -26,6 +26,10 @@ public class Document{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(columnDefinition = "nvarchar(2000) NOT NULL", unique=true)
+    private String slug;
+	
 	@Column(columnDefinition = "nvarchar(600) NOT NULL")
 	private String title;
 	@Column(name = "[file]" ,columnDefinition = "nvarchar(1000) NOT NULL")

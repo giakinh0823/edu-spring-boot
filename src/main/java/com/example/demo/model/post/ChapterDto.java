@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChapterDto {
 	private Long id;
+	private String slug;
 	@NotEmpty
 	private String name;	
 	

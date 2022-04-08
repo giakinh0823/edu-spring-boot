@@ -30,7 +30,7 @@ public class AdminAuthenticationInterceptor implements HandlerInterceptor {
 			throws Exception {
 		// TODO Auto-generated method stub
 		User user = (User) session.getAttribute("user");
-		if(user!=null) {
+		if(user!=null && (user.getIs_super() || user.getIs_staff())) {
 			String[] features = request.getRequestURI().trim().split("/"); 
 			String feature = features[2].substring(0, features[2].length()-1);
 			String action = features.length>3 ? features[3] : "read";

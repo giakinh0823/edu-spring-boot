@@ -20,6 +20,7 @@ public class Action {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(columnDefinition = "nvarchar(100) not null")
 	private String name;
 	@Column(columnDefinition = "nvarchar(100) not null")

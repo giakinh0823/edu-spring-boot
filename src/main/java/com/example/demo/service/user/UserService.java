@@ -82,4 +82,6 @@ public interface UserService {
 
 	Optional<User> findByUsernameIgnoreCase(String username);
 
+	Page<User> findByUsernameContainingOrEmailContainingOrPhoneContaining(String username, String email, String phone, Pageable pageable);
+
 }

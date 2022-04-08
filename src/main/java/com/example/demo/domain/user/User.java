@@ -31,6 +31,7 @@ public class User{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(columnDefinition = "nvarchar(255)")
 	private String username;
 	@Column(columnDefinition = "nvarchar(255)")
@@ -47,6 +48,7 @@ public class User{
 	private String phone;
 	private Boolean is_super;
 	private Boolean is_active;
+	private Boolean is_staff;
 	private Boolean gender;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_at;

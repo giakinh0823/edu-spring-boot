@@ -25,6 +25,7 @@ public class Type {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(columnDefinition = "nvarchar(255) NOT NULL")
 	private String name;
 	

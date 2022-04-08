@@ -153,7 +153,10 @@ public class PermissionController {
 		BeanUtils.copyProperties(permissionDto, permission);
 		permissionService.save(permission);
 		redirectAttributes.addFlashAttribute("success", "Permission save success!");
-		return new ModelAndView("redirect:"+referer);
+		if(permissionDto.isEdit()) {
+			return new ModelAndView("redirect:"+referer);
+		}
+		return new ModelAndView("redirect:/admin/permissions");
 	}
 
 	@GetMapping("delete/{id}")

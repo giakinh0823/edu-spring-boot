@@ -27,6 +27,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Override
+	public Page<User> findByUsernameContainingOrEmailContainingOrPhoneContaining(String username, String email, String phone,
+			Pageable pageable) {
+		return userRepository.findByUsernameContainingOrEmailContainingOrPhoneContaining(username, email, phone, pageable);
+	}
 
 	@Override
 	public List<User> findByUsernameContaining(String username) {

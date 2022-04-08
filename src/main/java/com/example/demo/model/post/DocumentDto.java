@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DocumentDto{
 	private Long id;
+	private String slug;
 	@NotEmpty
 	private String title;
 	private String file;

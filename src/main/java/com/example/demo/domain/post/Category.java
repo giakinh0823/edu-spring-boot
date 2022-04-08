@@ -27,8 +27,13 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(columnDefinition = "nvarchar(2000) NOT NULL", unique=true)
+    private String slug;
+	
 	@Column(columnDefinition = "nvarchar(255) NOT NULL")
 	private String name;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="groupId")

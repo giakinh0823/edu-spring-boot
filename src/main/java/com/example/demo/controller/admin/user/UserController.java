@@ -88,7 +88,7 @@ public class UserController {
 		Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id").descending());
 		Page<User> results = null;
 		if (StringUtils.hasText(search)) {
-			results = userService.findByUsernameContaining(search, pageable);
+			results = userService.findByUsernameContainingOrEmailContainingOrPhoneContaining(search,search,search, pageable);
 			model.addAttribute("search", search);
 		} else {
 			results = userService.findAll(pageable);
@@ -214,7 +214,19 @@ public class UserController {
 		}
 		userService.save(user);
 		redirectAttributes.addFlashAttribute("success", "User save success!");
-		return new ModelAndView("redirect:"+referer);
+		if(userDto.isEdit()) {
+			return new ModelAndView("redirect:"+referer);
+		}
+		return new ModelAndView("redirect:/admin/users");
+	}
+	
+	@GetMapping("delete/{id}")
+	public ModelAndView delete(@PathVariable("id") Long id,
+			@RequestHeader(value = "referer", required = false) String referer,
+			final RedirectAttributes redirectAttributes) {
+		userService.deleteById(id);
+		redirectAttributes.addFlashAttribute("success", "User is deleted!");
+		return new ModelAndView("redirect:" + referer);
 	}
 
 }

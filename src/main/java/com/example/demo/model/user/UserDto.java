@@ -38,6 +38,7 @@ public class UserDto{
 	private String phone;
 	private Boolean is_super;
 	private Boolean is_active;
+	private Boolean is_staff;
 	@NotNull
 	private Boolean gender;
 	private Date created_at;

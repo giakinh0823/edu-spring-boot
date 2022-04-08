@@ -28,6 +28,10 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(columnDefinition = "nvarchar(2000) NOT NULL", unique=true)
+    private String slug;
+	
 	@Column(columnDefinition = "nvarchar(600)")
 	private String title;
 	@Column(columnDefinition = "nvarchar(MAX)")

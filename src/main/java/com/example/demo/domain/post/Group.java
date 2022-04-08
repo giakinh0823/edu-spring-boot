@@ -25,6 +25,10 @@ public class Group {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(columnDefinition = "nvarchar(2000)", unique=true)
+    private String slug;
+	
 	@Column(columnDefinition = "nvarchar(255) NOT NULL")
 	private String name;
 	

@@ -11,30 +11,21 @@
 			<div class="flex justify-between items-center">
 				<div class="p-4">
 					<label for="table-search" class="sr-only">Search</label>
-					<form th:action="@{/admin/users}" method="get">
-						<div class="flex items-center">
-							<div class="relative flex items-center">
-								<input name="size" type="hidden" th:value="${size}" />
-								<div
-									class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-									<svg class="w-5 h-5 text-gray-500 dark:text-gray-400"
-										fill="currentColor" viewBox="0 0 20 20"
-										xmlns="http://www.w3.org/2000/svg">
+					<form th:group="@{/admin/groups}" method="get">
+						<div class="relative flex items-center">
+							<input name="size" type="hidden" th:value="${size}" />
+							<div
+								class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+								<svg class="w-5 h-5 text-gray-500 dark:text-gray-400"
+									fill="currentColor" viewBox="0 0 20 20"
+									xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd"
-											d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-											clip-rule="evenodd"></path></svg>
-								</div>
-								<input type="text" id="search" name="search"
-									th:value="${search}"
-									class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
-									placeholder="Search for items">
+										d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+										clip-rule="evenodd"></path></svg>
 							</div>
-							<div class="ml-4">
-								<select id="permission" name="permission"
-									class="w-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-									<option th:each="permission: ${permissions}" th:value="${permission.id}" th:text="${permission.name}"></option>
-								</select>
-							</div>
+							<input type="text" id="name" name="name"
+								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
+								placeholder="Search for items">
 							<Button type="submit"
 								class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 ml-3 focus:outline-none">
 								Search
@@ -53,7 +44,7 @@
 							<option value="150" th:selected="${size==150}">150</option>
 						</select>
 					</form>
-					<a href="/admin/users/add"
+					<a href="/admin/groups/add"
 						class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 ml-5 focus:outline-none">Add</a>
 				</div>
 			</div>
@@ -72,70 +63,23 @@
 				<table class="w-full text-sm text-left text-gray-500">
 					<thead class="text-xs text-gray-700 uppercase bg-gray-50">
 						<tr>
-							<th scope="col" class="px-6 py-3 text-center">id</th>
-							<th scope="col" class="px-6 py-3 text-center">username</th>
-							<th scope="col" class="px-6 py-3 text-center">first_name</th>
-							<th scope="col" class="px-6 py-3 text-center">last_name</th>
-							<th scope="col" class="px-6 py-3 text-center">email</th>
-							<th scope="col" class="px-6 py-3 text-center">phone</th>
-							<th scope="col" class="px-6 py-3 text-center">gender</th>
-							<th scope="col" class="px-6 py-3 text-center">is_super</th>
-							<th scope="col" class="px-6 py-3 text-center">is_active</th>
-							<th scope="col" class="px-6 py-3 text-center">permission</th>
-							<th scope="col" class="px-6 py-3 text-center">created_at</th>
-							<th scope="col" class="px-6 py-3 text-center">updated_at</th>
-							<th scope="col" class="px-6 py-3 text-center">image</th>
-							<th scope="col" class="px-6 py-3 text-center">action</th>
+							<th scope="col" class="px-6 py-3 text-center">Id</th>
+							<th scope="col" class="px-6 py-3 text-center">Name</th>
+							<th scope="col" class="px-6 py-3 text-center">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each=" user: ${results.content}" class="bg-white border-b">
+						<tr th:each=" group: ${results.content}"
+							class="bg-white border-b">
 							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.id}"></td>
+								th:text="${group.id}"></td>
 							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.username}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.first_name}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.last_name}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.email}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.phone}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.gender?'male':'female'}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium">
-								<input type="checkbox" th:checked="${user.is_super}" disabled
-								class="disabled w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500" />
-							</td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium">
-								<input type="checkbox" th:checked="${user.is_active}" disabled
-								class="disabled w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500" />
-							</td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium">
-								<p th:each="permission: ${user.permissions}"
-									th:text="${permission.name}"></p>
-							</td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.created_at}"></td>
-							<td class="px-6 py-4 text-center text-gray-600 font-medium"
-								th:text="${user.updated_at}"></td>
-							<td class="px-6 py-4 text-center flex justify-center">
-								<div class="relative">
-									<img
-										class="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] rounded-full"
-										th:src="@{'/admin/users/images/'+${user.image}}" /> <span
-										th:if="${user.is_active}"
-										class="bottom-0 left-8 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
-									<span th:unless="${user.is_active}"
-										class="bottom-0 left-8 absolute w-3.5 h-3.5 bg-red-400 border-2 border-white rounded-full" />
-								</div>
-							</td>
+								th:text="${group.name}"></td>
 							<td class="px-6 py-4 text-center font-medium"><a
 								class="text-blue-600"
-								th:href="@{'/admin/users/edit/'+${user.id}}">Edit</a> <span>/</span>
+								th:href="@{'/admin/groups/edit/'+${group.id}}">Edit</a> <span>/</span>
 								<button type="button" class="text-red-500"
-									th:data-id="${user.id}" onclick="openModal(this)">Delete</button>
+									th:data-id="${group.id}" onclick="openModal(this)">Delete</button>
 							</td>
 						</tr>
 					</tbody>
@@ -145,20 +89,20 @@
 				<nav class="mt-10" th:if="${results.totalPages > 0}">
 					<ul class="inline-flex -space-x-px">
 						<li><a
-							th:href="@{/admin/users(search=${search}, page=${results.number > 0 ? results.number:1}, size=${size})}"
+							th:href="@{/admin/groups(name=${name}, page=${results.number > 0 ? results.number:1}, size=${size})}"
 							class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
 						</li>
 						<li th:each=" page :${pages}" th:if="${page>=0}"><a
 							th:if="${page!=results.number+1}" th:text="${page}"
-							th:href="@{/admin/users(search=${search}, page=${page})}"
+							th:href="@{/admin/groups(name=${name}, page=${page})}"
 							class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "></a>
 							<a th:if="${page==results.number+1}" th:text="${page}"
-							th:href="@{/admin/users(search=${search}, page=${page}, size=${size})}"
+							th:href="@{/admin/groups(name=${name}, page=${page}, size=${size})}"
 							aria-current="page"
 							class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700"></a>
 						</li>
 						<li><a
-							th:href="@{/admin/users(search=${search}, page=${results.number+2 > results.totalPages ? results.totalPages : results.number+2}, size=${size})}"
+							th:href="@{/admin/groups(name=${name}, page=${results.number+2 > results.totalPages ? results.totalPages : results.number+2}, size=${size})}"
 							class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
 						</li>
 					</ul>
@@ -209,7 +153,7 @@
 		</div>
 		<script type="text/javascript">
 			function openModal(e){
-				$("#accept-delete-modal").attr("href", "/admin/users/delete/"+$(e).attr("data-id"));
+				$("#accept-delete-modal").attr("href", "/admin/groups/delete/"+$(e).attr("data-id"));
 				$("#button-delete-modal").click();
 			}
 		</script>
