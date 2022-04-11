@@ -24,8 +24,8 @@ public class ChapterServiceImpl implements ChapterService {
 	private ChapterRepository chapterRepository;
 
 	@Override
-	public Page<Chapter> findAllByCategoryId(Long categoryId, Pageable pageable) {
-		return chapterRepository.findAllByCategoryId(categoryId, pageable);
+	public Page<Chapter> findByCategoryId(Long categoryId, Pageable pageable) {
+		return chapterRepository.findByCategoryId(categoryId, pageable);
 	}
 
 	@Override

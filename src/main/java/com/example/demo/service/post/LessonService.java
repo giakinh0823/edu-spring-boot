@@ -80,4 +80,8 @@ public interface LessonService {
 
 	List<Lesson> findByNameContaining(String name);
 
+	Page<Lesson> findByChapterId(Long chapterId, Pageable pageable);
+
+	Page<Lesson> findByNameContainingAndChapterId(String name, Long chapterId, Pageable pageable);
+
 }

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout/dashboard.html}">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div layout:fragment="content">
+		<div>
+			<div class="flex justify-between items-center">
+				<div class="p-4">
+					<label for="table-search" class="sr-only">Search</label>
+					<form
+						th:action="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts'}"
+						method="get">
+						<div class="relative flex items-center">
+							<input name="size" type="hidden" th:value="${size}" />
+							<div
+								class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+								<svg class="w-5 h-5 text-gray-500 dark:text-gray-400"
+									fill="currentColor" viewBox="0 0 20 20"
+									xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd"
+										d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+										clip-rule="evenodd"></path></svg>
+							</div>
+							<input type="text" id="name" name="name"
+								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
+								placeholder="Search for items">
+							<Button type="submit"
+								class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 ml-3 focus:outline-none">
+								Search
+								</Buton>
+						</div>
+					</form>
+				</div>
+				<div class="flex justify-end">
+					<form>
+						<select onchange="this.form.submit()" id="size" name="size"
+							class="bg-gray-50 min-w-[140px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+							<option value="20">Size</option>
+							<option value="20" th:selected="${size==20}">20</option>
+							<option value="50" th:selected="${size==50}">50</option>
+							<option value="100" th:selected="${size==100}">100</option>
+							<option value="150" th:selected="${size==150}">150</option>
+						</select>
+					</form>
+					<a
+						th:href="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts/add'}"
+						class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 ml-5 focus:outline-none">Add</a>
+				</div>
+			</div>
+			<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+				<div th:if="${success!=null}"
+					class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+					role="alert">
+					<span class="font-medium">Success!</span> <span
+						th:text="${success}"></span>
+				</div>
+				<div th:if="${error!=null}"
+					class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+					role="alert">
+					<span class="font-medium">Error!</span> <span th:text="${error}"></span>
+				</div>
+				<table class="w-full text-sm text-left text-gray-500">
+					<thead class="text-xs text-gray-700 uppercase bg-gray-50">
+						<tr>
+							<th scope="col" class="px-6 py-3 text-center">Id</th>
+							<th scope="col" class="px-6 py-3 text-center">Name</th>
+							<th scope="col" class="px-6 py-3 text-center">Chapter</th>
+							<th scope="col" class="px-6 py-3 text-center">Post</th>
+							<th scope="col" class="px-6 py-3 text-center">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each=" post: ${results.content}"
+							class="bg-white border-b">
+							<td class="px-6 py-4 text-center text-gray-600 font-medium"
+								th:text="${post.id}"></td>
+							<td class="px-6 py-4 text-center text-gray-600 font-medium"
+								th:text="${post.title}"></td>
+							<td class="px-6 py-4 text-center text-gray-600 font-medium"
+								th:text="${lesson.lesson.name}"></td>
+							<td
+								class="px-6 py-4 flex items-center justify-center font-medium"><a
+								class="text-blue-600"
+								th:href="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts/detail/'+${post.id}}">
+									<svg class="w-6 h-6" fill="none" stroke="currentColor"
+										viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path stroke-linecap="round" stroke-linejoin="round"
+											stroke-width="2"
+											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+							</a></td>
+							<td class="px-6 py-4 text-center font-medium"><a
+								class="text-blue-600"
+								th:href="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts/edit/'+${post.id}}">Edit</a>
+								<span>/</span>
+								<button type="button" class="text-red-500"
+									th:data-id="${lesson.id}" onclick="openModal(this)">Delete</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="flex justify-center">
+				<nav class="mt-10" th:if="${results.totalPages > 0}">
+					<ul class="inline-flex -space-x-px">
+						<li><a
+							th:href="@{''/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts'(name=${name}, page=${results.number > 0 ? results.number:1}, size=${size})}"
+							class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
+						</li>
+						<li th:each=" page :${pages}" th:if="${page>=0}"><a
+							th:if="${page!=results.number+1}" th:text="${page}"
+							th:href="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts'(name=${name}, page=${page})}"
+							class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "></a>
+							<a th:if="${page==results.number+1}" th:text="${page}"
+							th:href="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts'(name=${name}, page=${page}, size=${size})}"
+							aria-current="page"
+							class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700"></a>
+						</li>
+						<li><a
+							th:href="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts'(name=${name}, page=${results.number+2 > results.totalPages ? results.totalPages : results.number+2}, size=${size})}"
+							class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<button
+			class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+			type="button" data-modal-toggle="popup-modal"
+			id="button-delete-modal"></button>
+		<div id="popup-modal" tabindex="-1"
+			class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full">
+			<div class="relative p-4 w-full max-w-md h-full md:h-auto">
+				<!-- Modal content -->
+				<div class="relative bg-white rounded-lg shadow">
+					<!-- Modal header -->
+					<div class="flex justify-end p-2">
+						<button type="button"
+							class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+							data-modal-toggle="popup-modal">
+							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+								xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+									d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+									clip-rule="evenodd"></path></svg>
+						</button>
+					</div>
+					<!-- Modal body -->
+					<div class="p-6 pt-0 text-center">
+						<svg
+							class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
+							fill="none" stroke="currentColor" viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg">
+						<path stroke-linecap="round" stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+						<h3 class="mb-5 text-lg font-normal text-gray-500">Are you
+							sure you want to delete this item?</h3>
+						<a id="accept-delete-modal"
+							class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+							Yes, I'm sure</a>
+						<button data-modal-toggle="popup-modal" type="button"
+							class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">No,
+							cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+			function openModal(e){
+				$("#accept-delete-modal").attr("href", "/admin/categories/detail/[[${chapter.categoryId}]]/chapters/detail/[[${chapter.id}]]/lessons/detail/[[${lesson.id}]]/posts/delete"+$(e).attr("data-id"));
+				$("#button-delete-modal").click();
+			}
+		</script>
+	</div>
+</body>
+</html>

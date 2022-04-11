@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout/dashboard.html}">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="/css/ckeditor/ckeditor.css"></link>
+<script type="text/javascript" src="/js/ckeditor/build/ckeditor.js"></script>
+<style>
+.ck-editor__editable_inline h1 {
+	font-size: 2em !important;
+	display: block !important;
+	margin-block-start: 0.67em !important;
+	margin-block-end: 0.67em !important;
+	margin-inline-start: 0px !important;
+	margin-inline-end: 0px !important;
+	font-weight: bold !important;
+}
+
+.ck-editor__editable_inline h2 {
+	display: block !important;
+	font-size: 1.5em !important;
+	margin-block-start: 0.83em !important;
+	margin-block-end: 0.83em !important;
+	margin-inline-start: 0px !important;
+	margin-inline-end: 0px !important;
+	font-weight: bold !important;
+}
+
+.ck-editor__editable_inline h3 {
+	display: block !important;
+	font-size: 1.17em !important;
+	margin-block-start: 1em !important;
+	margin-block-end: 1em !important;
+	margin-inline-start: 0px !important;
+	margin-inline-end: 0px !important;
+	font-weight: bold !important;
+}
+
+.ck-editor__editable_inline h4 {
+	display: block !important;
+	margin-block-start: 1.33em !important;
+	margin-block-end: 1.33em !important;
+	margin-inline-start: 0px !important;
+	margin-inline-end: 0px !important;
+	font-weight: bold !important;
+	font-size: 1em !important;
+}
+
+.ck-editor__editable_inline p {
+	font-size: 1.1rem !important;
+	font-weight: 500 !important;
+	color: #3b3a39 !important;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container mx-auto mt-20">
+			<form
+				th:action="@{'/admin/categories/detail/'+${chapter.categoryId}+'/chapters/detail/'+${chapter.id}+'/lessons/detail/'+${lesson.id}+'/posts/save'}"
+				th:object="${post}" method="post">
+				<div>
+					<h3 class="text-3xl mb-6" th:unless="${post.edit}">New post</h3>
+					<h3 class="text-3xl mb-6" th:if="${post.edit}">Update post</h3>
+				</div>
+				<div th:if="${success!=null}"
+					class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+					role="alert">
+					<span class="font-medium">Success!</span> <span
+						th:text="${success}"></span>
+				</div>
+				<div th:if="${error!=null}"
+					class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+					role="alert">
+					<span class="font-medium">Error!</span> <span th:text="${error}"></span>
+				</div>
+				<input type="hidden" th:field="*{edit}" />
+				<div class="mb-6" th:if="${post.edit}">
+					<label for="id"
+						class="block mb-2 text-sm font-medium text-gray-900">ID</label> <input
+						type="text" id="id" th:field="*{id}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+				</div>
+				<div class="mb-6">
+					<label for="title"
+						class="block mb-2 text-sm font-medium text-gray-900">Title</label>
+					<input type="text" id="title" th:field="*{title}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('title')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{title}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<label for="description"
+						class="block mb-2 text-sm font-medium text-gray-900">Description</label>
+					<textarea cols="4" rows="6" id="description"
+						th:field="*{description}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+						</textarea>
+					<p th:if="${#fields.hasErrors('description')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span
+							th:errors="*{description}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<input id="image" type="hidden" th:field="*{image}" />
+					<div id="preview"
+						th:class="'flex justify-center mb-6 '+${post.edit && post.image!=null ?'':'hidden'}">
+						<img class="w-[200px] h-[200px] rounded-full" id="image-preview"
+							th:src="@{'/admin/users/images/'+${post.edit && post.image!=null ?post.image:'default.jpg'}}" />
+					</div>
+					<label for="imageFile"
+						class="block mb-2 text-sm font-medium text-gray-900">Image</label>
+					<input id="imageFile" type="file" name="imageFile"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+				</div>
+				<div class="mb-6" th:if="${post.edit}">
+					<label for="slug"
+						class="block mb-2 text-sm font-medium text-gray-900">Slug</label>
+					<input type="text" id="slug" th:field="*{slug}"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<p th:if="${#fields.hasErrors('slug')}"
+						class="mt-2 text-sm text-red-600 dark:text-red-500">
+						<span class="font-medium">Oops!</span> <span th:errors="*{slug}"></span>
+					</p>
+				</div>
+				<div class="mb-6">
+					<textarea cols="4" rows="6" id="content"
+						th:field="*{content}"
+						class="hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					</textarea>
+					<div class="w-full">
+						<div class="w-full">
+							<div class="row w-full">
+								<div class="document-editor__toolbar w-full"></div>
+							</div>
+							<div class="row row-editor w-full">
+								<div class="editor-container">
+									<div class="editor"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button th:unless="${post.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Add
+					post</button>
+				<button th:if="${post.edit}" type="submit"
+					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Update
+					post</button>
+			</form>
+		</div>
+		<script type="text/javascript">
+		let data;
+        let new_editor;
+        const watchdog = new CKSource.EditorWatchdog();
+        window.watchdog = watchdog;
+
+        watchdog.setCreator( ( element, config ) => {
+			return CKSource.Editor
+				.create( element, {
+                    ...config,
+                    ckfinder: {
+                        options: {
+                            resourceType: 'Images'
+                        },
+                        uploadUrl: "<%=request.getContextPath()%>/admin/pods/media/upload"
+                    },
+                } )
+				.then( editor => {
+					document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+					document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+					editor.model.document.on('change:data', () => {
+                        let content = editor.getData();
+                        data = content;
+                        $("#content").val(content);
+                    })
+                    new_editor=editor;
+                    return editor;
+				} )
+		} );
+
+		
+        watchdog.setDestructor( editor => {
+			// Set a custom container for the toolbar.
+			document.querySelector( '.document-editor__toolbar' ).removeChild( editor.ui.view.toolbar.element );
+			return editor.destroy();
+		} );
+        
+        watchdog.on('error', handleError);
+        watchdog.create(document.querySelector('.editor'), {
+            licenseKey: '',
+        }).catch(handleError);
+        function handleError(error) {
+            console.error('Oops, something went wrong!');
+            console.error(error);
+        }
+
+		
+        var file;
+        $("#imageFile").on('change', function(e){
+            if (file) {
+                URL.revokeObjectURL(file.preview);
+            }
+            file = e.target.files[0];
+            file.preview = URL.createObjectURL(file);
+            $("#image-preview").attr("src", file.preview);
+            $("#preview").removeClass("hidden");
+        })
+
+		window.onbeforeunload = function (e) {
+            URL.revokeObjectURL(file.preview);
+        };
+		</script>
+	</div>
+</body>
+</html>

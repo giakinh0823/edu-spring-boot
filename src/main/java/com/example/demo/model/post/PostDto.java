@@ -22,6 +22,9 @@ public class PostDto implements Serializable{
 	private String image;
 	private Date created_at;
 	private Date updated_at;
+	
+	private Long lessonId;
+	private String imageFile;	
 
 	private boolean isEdit=false;
 }

@@ -17,6 +17,6 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 	@Query(value = "SELECT * FROM [chapter] WHERE [slug] LIKE %?1%", nativeQuery = true)
 	List<Chapter> findBySlugContaining(String slug);
 	Page<Chapter> findByNameContaining(String name, Pageable pageable);
-	Page<Chapter> findByNameContainingAndCategoryId(String name,Long categoryId, Pageable pageable);
-	Page<Chapter> findAllByCategoryId(Long categoryId, Pageable pageable);
+	Page<Chapter> findByNameContainingAndCategoryId(String name, Long categoryId, Pageable pageable);
+	Page<Chapter> findByCategoryId(Long categoryId, Pageable pageable);
 }

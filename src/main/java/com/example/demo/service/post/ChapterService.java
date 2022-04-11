@@ -82,6 +82,6 @@ public interface ChapterService {
 
 	Page<Chapter> findByNameContainingAndCategoryId(String name, Long categoryId,Pageable pageable);
 
-	Page<Chapter> findAllByCategoryId(Long categoryId, Pageable pageable);
+	Page<Chapter> findByCategoryId(Long categoryId, Pageable pageable);
 
 }

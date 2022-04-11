@@ -21,6 +21,18 @@ import com.example.demo.utils.SlugUtils;
 public class LessonServiceImpl implements LessonService {
 	@Autowired
 	private LessonRepository lessonRepository;
+	
+	
+
+	@Override
+	public Page<Lesson> findByNameContainingAndChapterId(String name, Long chapterId, Pageable pageable) {
+		return lessonRepository.findByNameContainingAndChapterId(name, chapterId, pageable);
+	}
+
+	@Override
+	public Page<Lesson> findByChapterId(Long chapterId, Pageable pageable) {
+		return lessonRepository.findByChapterId(chapterId, pageable);
+	}
 
 	@Override
 	public List<Lesson> findByNameContaining(String name) {

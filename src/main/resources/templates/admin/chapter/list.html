@@ -85,7 +85,7 @@
 							<td
 								class="px-6 py-4 flex items-center justify-center font-medium"><a
 								class="text-blue-600"
-								th:href="@{'/admin/chapters/detail/'+${chapter.id}+'/chapters'}">
+								th:href="@{'/admin/categories/detail/'+${category.id}+'/chapters/detail/'+${chapter.id}+'/lessons'}">
 									<svg class="w-6 h-6" fill="none" stroke="currentColor"
 										viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 										<path stroke-linecap="round" stroke-linejoin="round"
@@ -97,7 +97,7 @@
 								th:href="@{'/admin/categories/detail/'+${category.id}+'/chapters/edit/'+${chapter.id}}">Edit</a>
 								<span>/</span>
 								<button type="button" class="text-red-500"
-									th:data-id="${category.id}" onclick="openModal(this)">Delete</button>
+									th:data-id="${chapter.id}" onclick="openModal(this)">Delete</button>
 							</td>
 						</tr>
 					</tbody>
@@ -169,9 +169,9 @@
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript">
+		<script type="text/javascript"  th:inline="javascript">
 			function openModal(e){
-				$("#accept-delete-modal").attr("href", "/admin/chapters/delete/"+$(e).attr("data-id"));
+				$("#accept-delete-modal").attr("href", "/admin/categories/detail/[[${category.id}]]/chapters/delete/"+$(e).attr("data-id"));
 				$("#button-delete-modal").click();
 			}
 		</script>

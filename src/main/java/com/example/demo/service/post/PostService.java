@@ -78,4 +78,8 @@ public interface PostService {
 
 	List<Post> findBySlugContaining(String slug);
 
+	Page<Post> findByLessonId(Long lessonId, Pageable pageable);
+
+	Page<Post> findByTitleContainingAndLessonId(String title, Long lessonId, Pageable pageable);
+
 }

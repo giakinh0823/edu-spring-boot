@@ -38,10 +38,18 @@ public class AdminAuthenticationInterceptor implements HandlerInterceptor {
 				feature = feature.substring(0, feature.length() - 1);
 				action = features.length > 3 ? features[3] : "read";
 				
-			}else {
+			}else if(features.length<=8){
 				feature = features[5].replace("ies", "ys");
 				feature = feature.substring(0, feature.length() - 1);
 				action = features.length > 6 ? features[6] : "read";
+			}else if(features.length<=11){
+				feature = features[8].replace("ies", "ys");
+				feature = feature.substring(0, feature.length() - 1);
+				action = features.length > 9 ? features[9] : "read";
+			} else {
+				feature = features[11].replace("ies", "ys");
+				feature = feature.substring(0, feature.length() - 1);
+				action = features.length > 12 ? features[12] : "read";
 			}
 			if (action.equalsIgnoreCase("read") || action.equalsIgnoreCase("create") || action.equalsIgnoreCase("edit")
 					|| action.equalsIgnoreCase("delete")) {

@@ -75,7 +75,7 @@ public class ChapterController {
 			results = chapterService.findByNameContainingAndCategoryId(name, categoryId, pageable);
 			model.addAttribute("name", name);
 		} else {
-			results = chapterService.findAll(pageable);
+			results = chapterService.findByCategoryId(categoryId,pageable);
 		}
 		int totalPages = results.getTotalPages();
 		if (totalPages > 0) {
@@ -110,6 +110,7 @@ public class ChapterController {
 			Chapter chapter = optional.get();
 			BeanUtils.copyProperties(chapter, chapterDto);
 			chapterDto.setEdit(true);
+			chapterDto.setCategoryId(chapter.getCategory().getId());
 			model.addAttribute("chapter", chapterDto);
 			return new ModelAndView("admin/chapter/form", model);
 		}

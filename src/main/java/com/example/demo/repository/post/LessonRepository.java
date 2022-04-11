@@ -16,4 +16,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long>{
 	@Query(value="SELECT * FROM [lesson] WHERE [slug] LIKE %?1%",  nativeQuery = true)
 	List<Lesson> findBySlugContaining(String slug);
 	Page<Lesson> findByNameContaining(String name, Pageable pageable);
+	Page<Lesson> findByNameContainingAndChapterId(String name, Long chapterId, Pageable pageable);
+	Page<Lesson> findByChapterId(Long chapterId, Pageable pageable);
 }

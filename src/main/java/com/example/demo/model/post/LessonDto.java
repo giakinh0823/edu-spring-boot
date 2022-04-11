@@ -17,5 +17,7 @@ public class LessonDto implements Serializable{
 	@NotEmpty
 	private String name;
 	
+	private Long chapterId;
+	
 	private boolean isEdit=false;
 }
