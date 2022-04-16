@@ -20,4 +20,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	Page<Post> findByTitleContainingAndLessonId(String title, Long lessonId, Pageable pageable);
 
 	Page<Post> findByLessonId(Long lessonId, Pageable pageable);
+	
+	Post findByLessonId(Long lessonId);
 }

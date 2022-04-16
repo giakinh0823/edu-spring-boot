@@ -23,6 +23,11 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepository;
 
 	@Override
+	public Post findByLessonId(Long lessonId) {
+		return postRepository.findByLessonId(lessonId);
+	}
+
+	@Override
 	public Page<Post> findByTitleContainingAndLessonId(String title, Long lessonId, Pageable pageable) {
 		return postRepository.findByTitleContainingAndLessonId(title, lessonId, pageable);
 	}

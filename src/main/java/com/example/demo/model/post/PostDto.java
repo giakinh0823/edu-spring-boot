@@ -27,6 +27,7 @@ public class PostDto implements Serializable {
 	private Date updated_at;
 
 	private Long lessonId;
+	private Long typeId;
 	private MultipartFile imageFile;
 	private MultipartFile filePdf;
 

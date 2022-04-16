@@ -73,7 +73,6 @@ public class UserController {
 	@GetMapping("/images/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> serverFile(@PathVariable String filename) {
-		System.out.print(filename);
 		storageService.setRootLocation("uploads/images/user");
 		Resource file = storageService.loadAsResource(filename);
 		return ResponseEntity.ok()

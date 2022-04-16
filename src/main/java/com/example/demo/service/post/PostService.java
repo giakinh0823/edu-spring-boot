@@ -82,4 +82,6 @@ public interface PostService {
 
 	Page<Post> findByTitleContainingAndLessonId(String title, Long lessonId, Pageable pageable);
 
+	Post findByLessonId(Long lessonId);
+
 }
