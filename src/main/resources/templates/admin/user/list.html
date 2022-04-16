@@ -129,7 +129,10 @@
 								<div class="relative">
 									<img
 										class="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] rounded-full"
-										th:src="@{'/admin/users/images/'+${user.image}}" /> <span
+										th:src="@{'/admin/users/images/'+${user.image}}" th:if="${user.image!=null}" /> 
+										<img
+										class="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] rounded-full"
+										th:src="@{'/admin/users/images/default.jpg'}" th:unless="${user.image!=null}" /><span
 										th:if="${user.is_active}"
 										class="bottom-0 left-8 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
 									<span th:unless="${user.is_active}"

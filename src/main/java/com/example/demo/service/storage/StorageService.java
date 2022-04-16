@@ -20,4 +20,6 @@ public interface StorageService {
 
 	String getStoredFileName(MultipartFile file, String id);
 
+	void setRootLocation(String path);
+
 }

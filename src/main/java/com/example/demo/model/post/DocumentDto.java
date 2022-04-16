@@ -21,5 +21,7 @@ public class DocumentDto implements Serializable{
 	private Date created_at;
 	private Date updated_at;
 	
+	private String filePdf;
+	
 	private boolean isEdit=false;
 }

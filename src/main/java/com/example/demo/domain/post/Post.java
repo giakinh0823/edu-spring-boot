@@ -41,6 +41,8 @@ public class Post implements Serializable{
 	private String content;
 	@Column(columnDefinition = "nvarchar(2000)")
 	private String image;
+	@Column(name="[file]",columnDefinition = "nvarchar(2000)")
+	private String file;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_at;
 	@Temporal(TemporalType.TIMESTAMP)

@@ -110,7 +110,7 @@
 					<input id="image" type="hidden" th:field="*{image}" />
 					<div id="preview"
 						th:class="'flex justify-center mb-6 '+${post.edit && post.image!=null ?'':'hidden'}">
-						<img class="w-[200px] h-[200px] rounded-full" id="image-preview"
+						<img class="w-[400px]" id="image-preview"	
 							th:src="@{'/admin/users/images/'+${post.edit && post.image!=null ?post.image:'default.jpg'}}" />
 					</div>
 					<label for="imageFile"
@@ -146,6 +146,13 @@
 						</div>
 					</div>
 				</div>
+				<div class="mb-6">
+					<input id="image" type="hidden" th:field="*{file}" />
+					<label for="filePdf"
+						class="block mb-2 text-sm font-medium text-gray-900">File Pdf</label>
+					<input id="filePdf" type="file" name="filePdf"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+				</div>
 				<button th:unless="${post.edit}" type="submit"
 					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Add
 					post</button>
@@ -154,7 +161,7 @@
 					post</button>
 			</form>
 		</div>
-		<script type="text/javascript">
+		<script type="text/javascript" th:inline="javascript">
 		let data;
         let new_editor;
         const watchdog = new CKSource.EditorWatchdog();
@@ -168,7 +175,7 @@
                         options: {
                             resourceType: 'Images'
                         },
-                        uploadUrl: "<%=request.getContextPath()%>/admin/pods/media/upload"
+                        uploadUrl: "/admin/pods/media/upload"
                     },
                 } )
 				.then( editor => {
@@ -179,12 +186,11 @@
                         data = content;
                         $("#content").val(content);
                     })
-                    new_editor=editor;
+                    new_editor = editor;
                     return editor;
 				} )
-		} );
-
-		
+		} );       
+        
         watchdog.setDestructor( editor => {
 			// Set a custom container for the toolbar.
 			document.querySelector( '.document-editor__toolbar' ).removeChild( editor.ui.view.toolbar.element );

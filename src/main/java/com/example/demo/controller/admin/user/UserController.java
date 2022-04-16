@@ -73,6 +73,8 @@ public class UserController {
 	@GetMapping("/images/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> serverFile(@PathVariable String filename) {
+		System.out.print(filename);
+		storageService.setRootLocation("uploads/images/user");
 		Resource file = storageService.loadAsResource(filename);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename\"" + file.getFilename() + "\"")
@@ -192,9 +194,10 @@ public class UserController {
 			}
 		}
 		if(userDto.getImageFile()!=null && !userDto.getImageFile().isEmpty()) {
-			if (userDto.isEdit() && userDto.getImage()!=null) {
+			storageService.setRootLocation("uploads/images/user");
+			if (userDto.isEdit() && user.getImage()!=null && !user.getImage().isEmpty()) {
 				try {
-					storageService.delete(userDto.getImage());
+					storageService.delete(user.getImage());
 				} catch (Exception e) {
 					// TODO: handle exception
 					model.addAttribute("error", "Some thing error!");
@@ -204,8 +207,10 @@ public class UserController {
 			UUID uuid = UUID.randomUUID();
 			String uuString = uuid.toString();
 			user.setImage(storageService.getStoredFileName(userDto.getImageFile(), uuString));
+			System.out.print(user.getImage());
 			try {
 				storageService.store(userDto.getImageFile(), user.getImage());
+				user.setImage(user.getImage());
 			} catch (Exception e) {
 				// TODO: handle exception
 				model.addAttribute("error", "Cant not save file");

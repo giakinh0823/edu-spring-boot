@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto implements Serializable{
+public class PostDto implements Serializable {
 	private Long id;
 	private String slug;
 	@NotEmpty
@@ -20,11 +22,13 @@ public class PostDto implements Serializable{
 	private String description;
 	private String content;
 	private String image;
+	private String file;
 	private Date created_at;
 	private Date updated_at;
-	
-	private Long lessonId;
-	private String imageFile;	
 
-	private boolean isEdit=false;
+	private Long lessonId;
+	private MultipartFile imageFile;
+	private MultipartFile filePdf;
+
+	private boolean isEdit = false;
 }

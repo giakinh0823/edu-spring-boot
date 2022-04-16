@@ -21,7 +21,7 @@ import com.example.demo.service.storage.StorageService;
 @Service
 public class FileSytemStorageServiceImpl implements StorageService{
 	/* Xác định đường dẫn gốc dùng để lưu file */
-	private final Path rootLocation;
+	private Path rootLocation;
 	
 	/* Tạo ra file lưu trữ dựa vào id truyền vào - mean(Lấy thông tin tên file để lưu trữ vào database) */
 	@Override
@@ -43,6 +43,11 @@ public class FileSytemStorageServiceImpl implements StorageService{
 		 * 
 		 * */
 		this.rootLocation = Paths.get(properties.getLocation());
+	}
+	
+	@Override
+	public void setRootLocation(String path) {
+		this.rootLocation = Paths.get(path);
 	}
 	
 	// Lưu nội dùng của file từ thành phần MultipartFile
