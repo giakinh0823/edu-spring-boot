@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -103,7 +104,8 @@ public class PostController {
 		storageService.setRootLocation("uploads/images/post");
 		Resource file = storageService.loadAsResource(filename);
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename\"" + file.getFilename() + "\"")
+				.contentType(MediaType.IMAGE_GIF)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename\"" + file.getFilename() + "\"")
 				.body(file);
 	}
 	
@@ -113,7 +115,8 @@ public class PostController {
 		storageService.setRootLocation("uploads/files/post");
 		Resource file = storageService.loadAsResource(filename);
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename\"" + file.getFilename() + "\"")
+				.contentType(MediaType.APPLICATION_PDF)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename\"" + file.getFilename() + "\"")
 				.body(file);
 	}
 

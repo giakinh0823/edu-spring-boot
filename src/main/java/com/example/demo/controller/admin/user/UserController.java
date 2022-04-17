@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,7 +77,8 @@ public class UserController {
 		storageService.setRootLocation("uploads/images/user");
 		Resource file = storageService.loadAsResource(filename);
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename\"" + file.getFilename() + "\"")
+				.contentType(MediaType.IMAGE_GIF)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + file.getFilename() + "")
 				.body(file);
 	}
 

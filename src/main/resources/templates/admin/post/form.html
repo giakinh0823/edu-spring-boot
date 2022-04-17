@@ -114,7 +114,13 @@
 					</div>
 				</div>
 				<div class="mb-6">
-					<input id="file" type="hidden" th:field="*{file}" /> <label
+					<input id="file" type="hidden" th:field="*{file}" /> 
+					<div id="preview-pdf"
+						th:class="'flex justify-center mb-6 '+${post.edit && post.image!=null ?'':'hidden'}">
+						<iframe class="w-full" height="1200px" id="pdf-preview"
+							th:src="@{'../files/'+${post.edit && post.file!=null ?post.file:''}}" ></iframe>
+					</div>
+					<label
 						for="filePdf" class="block mb-2 text-sm font-medium text-gray-900">File
 						Pdf</label> <input id="filePdf" type="file" name="filePdf"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
@@ -129,19 +135,31 @@
 		</div>
 		<script type="text/javascript" th:inline="javascript">
 		
-        var file;
+        var fileImage;
         $("#imageFile").on('change', function(e){
-            if (file) {
-                URL.revokeObjectURL(file.preview);
+            if (fileImage) {
+                URL.revokeObjectURL(fileImage.preview);
             }
-            file = e.target.files[0];
-            file.preview = URL.createObjectURL(file);
-            $("#image-preview").attr("src", file.preview);
+            fileImage = e.target.files[0];
+            fileImage.preview = URL.createObjectURL(fileImage);
+            $("#image-preview").attr("src", fileImage.preview);
             $("#preview").removeClass("hidden");
         })
 
+        var filePdf;
+        $("#filePdf").on('change', function(e){
+            if (filePdf) {
+                URL.revokeObjectURL(filePdf.preview);
+            }
+            filePdf = e.target.files[0];
+            filePdf.preview = URL.createObjectURL(filePdf);
+            $("#pdf-preview").attr("src", filePdf.preview);
+            $("#preview-pdf").removeClass("hidden");
+        })
+
 		window.onbeforeunload = function (e) {
-            URL.revokeObjectURL(file.preview);
+        	URL.revokeObjectURL(fileImage.preview);
+            URL.revokeObjectURL(filePdf.preview);
         };
 		</script>
 	</div>

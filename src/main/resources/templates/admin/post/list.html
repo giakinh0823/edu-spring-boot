@@ -3,14 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{admin/layout/dashboard.html}">
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" href="/richtext/res/style.css" />
 <link rel="stylesheet"
-	href="/richtext/richtexteditor/rte_theme_default.css" />
-<script type="text/javascript" src="/richtext/richtexteditor/rte.js"></script>
-<script>RTE_DefaultConfig.url_base='/richtext/richtexteditor'</script>
-<script type="text/javascript"
-	src='/richtext/richtexteditor/plugins/all_plugins.js'></script>
+	href="/richtext/richtexteditor/runtime/richtexteditor_preview.css" />
 </head>
 <body>
 	<div layout:fragment="content">
@@ -53,7 +47,9 @@
 				</div>
 				<div class="mt-10">
 					<h1 class="text-xl font-medium">File PDF</h1>
-					<div class="mt-10"></div>
+					<div class="mt-10">
+						 <iframe th:src="@{'posts/files/'+${post.file}}" width="100%" height="1200px"></iframe>
+					</div>
 				</div>
 			</div>
 			<script th:inline="javascript">

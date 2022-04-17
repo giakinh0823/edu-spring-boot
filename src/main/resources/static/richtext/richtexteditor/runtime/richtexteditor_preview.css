@@ -1,7 +1,7 @@
-﻿
+
 /* TODO: use @import for your css */
 
-body, table, p, div {
+/*body, table, p, div {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: #414141;
 	font-size: 14px;
@@ -15,6 +15,7 @@ a {
 	-o-transition: color 0.2s ease 0s, text-decoration 0.2s ease 0s;
 	transition: color 0.2s ease 0s, text-decoration 0.2s ease 0s;
 }
+*/
 
 /*RTE_DefaultConfig.items_InlineClasses*/
 .my-cls-mark {
@@ -47,16 +48,6 @@ a {
 }
 
 
-body {
-}
-
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
 
 table {
 	border-spacing: 0;
@@ -73,6 +64,10 @@ table[border="0"] td, table:not([border]) td, table[border="0"] th, table:not([b
 thead {
 	background-color: #eee;
 }
+
+
+
+
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
 	padding: 8px;
 	line-height: 1.42857143;
